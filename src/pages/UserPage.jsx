@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
+
 const UserPage = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const history = useHistory();
   const { id } = useParams();
 
   const getUserDetails = () => {
@@ -26,6 +28,15 @@ const UserPage = () => {
   useEffect(() => {
     getUserDetails();
   }, []);
+
+  const handleGoBack = () => {
+    if (history.length > 2) {
+      history.go(-1);
+    } else {
+      history.push("/users");
+    }
+    // history.replace("/users");
+  };
   return isLoading ? (
     <div>...loading</div>
   ) : (
@@ -35,6 +46,7 @@ const UserPage = () => {
         <h3>{`${user.first_name} ${user.last_name}`}</h3>
         <h5>{`Email : ${user.email}`}</h5>
       </div>
+      <button onClick={handleGoBack}>Go Back</button>
     </div>
   );
 };

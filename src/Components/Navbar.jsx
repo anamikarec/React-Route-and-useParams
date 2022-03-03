@@ -13,6 +13,10 @@ const Links = [
   {
     to: "/users",
     title: "Users"
+  },
+  {
+    to: "/login",
+    title: "Login"
   }
 ];
 const Navbar = () => {
