@@ -1,13 +1,38 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Users = () => {
-  return (
+  const [users, setUsers] = useState([]);
+  const [loading, setIsLoading] = useState(true);
+
+  const fetchUsers = () => {
+    axios
+      .get("https://reqres.in/api/users")
+      .then((res) => {
+        console.log(res);
+        setUsers(res.data.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  return loading ? (
+    <div>...loading</div>
+  ) : (
     <div>
-      {[1, 2, 3].map((item) => {
+      {users.map((user) => {
         return (
           <div>
-            <Link to={`users/${item}`}>User : {item}</Link>
+            <Link
+              to={`/users/${user.id}`}
+            >{`${user.first_name} ${user.last_name}`}</Link>
           </div>
         );
       })}
